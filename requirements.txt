@@ -1,0 +1,9 @@
+streamlit
+folium
+geopandas
+branca
+streamlit-folium
+pyarrow
+fastparquet
+Pillow
+shapely
