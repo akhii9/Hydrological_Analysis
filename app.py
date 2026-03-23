@@ -8,7 +8,7 @@ from shapely.geometry import Point
 import os
 from PIL import Image
 
-
+# 1. IMAGE LOADING FUNCTION
 def get_dashboard_images():
     """Pulls project images. Automatically checks for .png and .tif extensions."""
     image_files = {
@@ -47,7 +47,6 @@ st.set_page_config(page_title="Hyderabad Flood Dashboard", layout="wide")
 
 
 # 3. DATA LOADING & PREPARATION (SPEED OPTIMIZED)
-
 @st.cache_data
 def load_data():
     try:
@@ -60,7 +59,6 @@ def load_data():
         moosi_flood = gpd.read_file('Moosi_flood_extent.geojson')
 
         # --- SPEED OPTIMIZATION: Geometry Simplification ---
-        # 0.0001 is approx 11-meter precision. This significantly reduces lag.
         zones['geometry'] = zones['geometry'].simplify(0.0001, preserve_topology=True)
         rainfall['geometry'] = rainfall['geometry'].simplify(0.0001, preserve_topology=True)
         moosi_flood['geometry'] = moosi_flood['geometry'].simplify(0.0001, preserve_topology=True)
@@ -97,7 +95,6 @@ images = get_dashboard_images()
 
 
 # 4. SIDEBAR: LOCATION RISK LOOKUP
-
 st.sidebar.title("📍 Location Risk Lookup")
 user_lat = st.sidebar.number_input("Enter Latitude", value=17.385044, format="%.6f")
 user_lon = st.sidebar.number_input("Enter Longitude", value=78.486671, format="%.6f")
@@ -126,7 +123,6 @@ show_roads = st.sidebar.checkbox("Show Critical Road Blockages", value=True)
 
 
 # 5. MAIN CONTENT - TABS
-
 tab1, tab2 = st.tabs(["🗺️ Interactive Dashboard", "🖼️ Map Gallery"])
 
 with tab1:
@@ -201,5 +197,16 @@ with tab2:
                 st.image(images[key], use_container_width=True)
             else:
                 st.warning(f"Map file for '{key}' not found in directory.")
+
+# 6. LEGAL DISCLAIMER & LIMITATIONS (SIDEBAR FOOTER)
+st.sidebar.markdown("---")
+st.sidebar.subheader("⚖️ Legal Disclaimer")
+st.sidebar.warning("""
+**Strict Prohibition:** Further usage, reproduction, or distribution of this analytical model and its underlying datasets is strictly prohibited without explicit authorization.
+
+**Technical Limitations:**
+- **Data Granularity:** The current analysis relies on coarse-resolution datasets which may overlook micro-drainage patterns and hyper-local street-level features.
+- **Temporal Constraints:** The study provides a static susceptibility snapshot rather than a dynamic, real-time response model.
+""")
 
 st.sidebar.info("Project: **Hydrology of Hyderabad** - GEO INFORMATICS")
