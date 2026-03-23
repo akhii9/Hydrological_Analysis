@@ -8,9 +8,7 @@ from shapely.geometry import Point
 import os
 from PIL import Image
 
-# -------------------------------
-# 1. IMAGE LOADER UTILITY (STRENGTHENED)
-# -------------------------------
+
 def get_dashboard_images():
     """Pulls project images. Automatically checks for .png and .tif extensions."""
     image_files = {
@@ -43,14 +41,13 @@ def get_dashboard_images():
                 
     return loaded_images
 
-# -------------------------------
+
 # 2. PAGE CONFIGURATION
-# -------------------------------
 st.set_page_config(page_title="Hyderabad Flood Dashboard", layout="wide")
 
-# -------------------------------
+
 # 3. DATA LOADING & PREPARATION (SPEED OPTIMIZED)
-# -------------------------------
+
 @st.cache_data
 def load_data():
     try:
@@ -98,9 +95,9 @@ st.write("Analysis  -  Realtime Case Study  -  Preparedness")
 flood_zones, roads, rainfall_data, moosi_extent = load_data()
 images = get_dashboard_images()
 
-# -------------------------------
+
 # 4. SIDEBAR: LOCATION RISK LOOKUP
-# -------------------------------
+
 st.sidebar.title("📍 Location Risk Lookup")
 user_lat = st.sidebar.number_input("Enter Latitude", value=17.385044, format="%.6f")
 user_lon = st.sidebar.number_input("Enter Longitude", value=78.486671, format="%.6f")
@@ -127,9 +124,9 @@ show_rainfall = st.sidebar.checkbox("Show Rainfall Intensity Overlay", value=Fal
 show_moosi = st.sidebar.checkbox("Show Moosi Flood Extent", value=False)
 show_roads = st.sidebar.checkbox("Show Critical Road Blockages", value=True)
 
-# -------------------------------
+
 # 5. MAIN CONTENT - TABS
-# -------------------------------
+
 tab1, tab2 = st.tabs(["🗺️ Interactive Dashboard", "🖼️ Map Gallery"])
 
 with tab1:
